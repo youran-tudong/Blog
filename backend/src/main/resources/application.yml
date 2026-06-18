@@ -1,0 +1,76 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: technote-backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/technote?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+sa-token:
+  token-name: Authorization
+  timeout: 2592000
+  active-timeout: -1
+  is-concurrent: true
+  is-share: true
+  token-style: uuid
+  is-log: false
+
+technote:
+  public-site-url: http://localhost:5173
+  upload:
+    root-path: uploads
+    access-prefix: /uploads
+  rate-limit:
+    enabled: true
+    comment:
+      limit: 5
+      window-seconds: 60
+      message: 评论提交过于频繁，请稍后再试
+    guestbook:
+      limit: 5
+      window-seconds: 60
+      message: 留言提交过于频繁，请稍后再试
+    link-apply:
+      limit: 3
+      window-seconds: 3600
+      message: 友链申请过于频繁，请稍后再试
+    article-like:
+      limit: 60
+      window-seconds: 60
+      message: 点赞操作过于频繁，请稍后再试
+  public-submit-guard:
+    enabled: true
+    captcha:
+      enabled: true
+      ttl-seconds: 300
+      max-entries: 2000
+    sensitive-word:
+      enabled: true
+      message: 提交内容包含暂不支持发布的词汇，请调整后再提交
+      words:
+        - 博彩
+        - 贷款
+        - 发票
+        - 代刷
+        - spam
