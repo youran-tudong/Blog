@@ -57,6 +57,7 @@ TechNote
 │  ├─ DEMO_CHECKLIST.md
 │  ├─ HANDOFF.md
 │  └─ COMPLETION_AUDIT.md
+├─ .gitignore
 └─ README.md
 ```
 

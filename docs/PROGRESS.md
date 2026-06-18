@@ -927,3 +927,14 @@
 - 当前全量 schema 中 Entity 映射所需字段静态对齐，未发现缺失列或错误表名。
 - 本轮没有修改业务源码。
 - 仍未连接 MySQL，SQL 真实执行和 MyBatis-Plus 运行时映射仍需在获得允许后验证。
+
+### 45. 本轮继续完成：仓库忽略规则交接记录与目录树同步
+
+修复内容：
+- 上一轮已新增并推送根目录 `.gitignore`，忽略 `frontend/node_modules/`、`frontend/dist/`、`backend/target/`、上传目录、日志、本地 IDE 配置和本地环境变量文件，避免后续安装依赖或构建后误提交大文件与本地配置。
+- 更新 `README.md` 目录结构，补充 `.gitignore`，保持项目总览与当前根目录一致。
+
+验证：
+- `git status --short` 确认本轮仅修改 `README.md` 和 `docs/PROGRESS.md`。
+- `.gitignore` 已在提交 `chore: add project gitignore` 中推送到远程 `origin/main`。
+- 本轮未运行 npm、Maven、MySQL 或浏览器验收。
