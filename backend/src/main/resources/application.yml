@@ -8,9 +8,9 @@ spring:
     name: technote-backend
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/technote?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: root
-    password: root
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/technote?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
   servlet:
     multipart:
       max-file-size: 10MB
@@ -37,10 +37,10 @@ sa-token:
   is-log: false
 
 technote:
-  public-site-url: http://localhost:5173
+  public-site-url: ${TECHNOTE_PUBLIC_SITE_URL:http://localhost:5173}
   upload:
-    root-path: uploads
-    access-prefix: /uploads
+    root-path: ${TECHNOTE_UPLOAD_ROOT_PATH:uploads}
+    access-prefix: ${TECHNOTE_UPLOAD_ACCESS_PREFIX:/uploads}
   rate-limit:
     enabled: true
     comment:

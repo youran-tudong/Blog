@@ -26,9 +26,12 @@
 
 - 服务端口：`8080`
 - 后端 context-path：`/api`
-- 数据库：`jdbc:mysql://localhost:3306/technote`
-- 默认账号密码配置：`root/root`
-- 公开站点地址：`technote.public-site-url: http://localhost:5173`
+- 数据库默认地址：`MYSQL_URL=jdbc:mysql://localhost:3306/technote?...`
+- 数据库默认账号密码：`MYSQL_USERNAME=root` / `MYSQL_PASSWORD=root`
+- 公开站点地址：`TECHNOTE_PUBLIC_SITE_URL=http://localhost:5173`
+- 上传目录默认值：`TECHNOTE_UPLOAD_ROOT_PATH=uploads`
+
+这些环境变量不设置时会使用默认值；正式部署时建议覆盖数据库账号密码和公开站点地址。
 
 ## 3. 数据库脚本顺序
 

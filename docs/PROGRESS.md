@@ -938,3 +938,17 @@
 - `git status --short` 确认本轮仅修改 `README.md` 和 `docs/PROGRESS.md`。
 - `.gitignore` 已在提交 `chore: add project gitignore` 中推送到远程 `origin/main`。
 - 本轮未运行 npm、Maven、MySQL 或浏览器验收。
+
+### 46. 本轮继续完成：后端本地配置支持环境变量覆盖
+
+修复内容：
+- `backend/src/main/resources/application.yml` 将 MySQL 连接地址、用户名、密码改为 `${MYSQL_URL:...}`、`${MYSQL_USERNAME:root}`、`${MYSQL_PASSWORD:root}`，保留本地默认值，同时支持部署环境覆盖。
+- `technote.public-site-url` 改为 `${TECHNOTE_PUBLIC_SITE_URL:http://localhost:5173}`，避免部署后必须直接改源码配置。
+- 上传根目录和访问前缀改为 `${TECHNOTE_UPLOAD_ROOT_PATH:uploads}`、`${TECHNOTE_UPLOAD_ACCESS_PREFIX:/uploads}`。
+- `README.md` 补充可用环境变量说明。
+- `docs/HANDOFF.md` 同步数据库、公开站点和上传目录的环境变量接手说明。
+
+设计说明：
+- 保留默认值是为了不破坏本机演示启动方式。
+- 通过环境变量覆盖部署配置，可以避免把真实数据库账号密码写入远程仓库。
+- 本轮未运行后端启动或 Maven 构建，后续仍需在获得允许后验证 Spring Boot 占位符解析和数据库连接。

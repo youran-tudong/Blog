@@ -70,6 +70,19 @@ TechNote
 - Node 24.11.0
 - npm 11.6.1
 
+后端默认读取本机 MySQL，不设置环境变量时会使用以下默认值：
+
+```text
+MYSQL_URL=jdbc:mysql://localhost:3306/technote?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+MYSQL_USERNAME=root
+MYSQL_PASSWORD=root
+TECHNOTE_PUBLIC_SITE_URL=http://localhost:5173
+TECHNOTE_UPLOAD_ROOT_PATH=uploads
+TECHNOTE_UPLOAD_ACCESS_PREFIX=/uploads
+```
+
+部署到其它机器时，建议通过环境变量覆盖数据库账号密码、公开站点地址和上传目录，不要把真实账号密码写入仓库。
+
 需要运行时：
 
 ```bash
