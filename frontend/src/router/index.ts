@@ -16,6 +16,7 @@ import GuestbookPage from '../views/public/GuestbookPage.vue'
 import HomePage from '../views/public/HomePage.vue'
 import LinksPage from '../views/public/LinksPage.vue'
 import NotFoundPage from '../views/public/NotFoundPage.vue'
+import RoadmapPage from '../views/public/RoadmapPage.vue'
 import SearchPage from '../views/public/SearchPage.vue'
 import AdminLinksPage from '../views/admin/AdminLinksPage.vue'
 import AdminLinkApplicationsPage from '../views/admin/AdminLinkApplicationsPage.vue'
@@ -39,6 +40,7 @@ export const router = createRouter({
         { path: 'columns', component: ColumnsPage },
         { path: 'columns/:slug', component: ColumnsPage },
         { path: 'archives', component: ArchivesPage },
+        { path: 'roadmap', component: RoadmapPage },
         { path: 'links', component: LinksPage },
         { path: 'guestbook', component: GuestbookPage },
         { path: 'about', component: AboutPage },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { LoaderCircle, Search, SunMoon } from 'lucide-vue-next'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import type { ArticleListItem } from '../api/article'
@@ -28,10 +28,12 @@ const navItems = [
   { label: '首页', to: '/' },
   { label: '专栏', to: '/columns' },
   { label: '归档', to: '/archives' },
+  { label: '题库', to: '/roadmap' },
   { label: '友链', to: '/links' },
   { label: '留言', to: '/guestbook' },
   { label: '关于', to: '/about' },
 ]
+const isRoadmapPage = computed(() => route.path === '/roadmap')
 const setting = ref<SettingItem>({
   siteTitle: 'TechNote',
   siteDescription: '面向技术创作者的个人内容管理与分享系统',
@@ -43,6 +45,7 @@ const routeTitleMap: Record<string, string> = {
   '/': '',
   '/columns': '专栏',
   '/archives': '归档',
+  '/roadmap': '题库',
   '/links': '友链',
   '/guestbook': '留言',
   '/about': '关于',
@@ -222,9 +225,14 @@ watch(
       </nav>
     </header>
 
-    <main class="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-3 py-4 sm:px-4 lg:grid-cols-[220px_1fr_260px]">
+    <main
+      :class="[
+        'mx-auto max-w-7xl px-3 py-4 sm:px-4',
+        isRoadmapPage ? 'flex flex-col gap-4' : 'grid grid-cols-1 gap-4 lg:grid-cols-[220px_1fr_260px]',
+      ]"
+    >
       <nav
-        v-if="categories.length > 0 || columns.length > 0 || tags.length > 0"
+        v-if="!isRoadmapPage && (categories.length > 0 || columns.length > 0 || tags.length > 0)"
         class="flex gap-2 overflow-x-auto pb-1 lg:hidden"
         aria-label="内容筛选"
       >
@@ -260,7 +268,7 @@ watch(
         </RouterLink>
       </nav>
 
-      <Card class="hidden lg:block">
+      <Card v-if="!isRoadmapPage" class="hidden lg:block">
         <CardContent class="flex flex-col gap-4 pt-4">
           <div>
             <div class="mb-2 text-sm font-medium">分类</div>
@@ -310,7 +318,7 @@ watch(
         <RouterView />
       </section>
 
-      <Card class="h-fit">
+      <Card v-if="!isRoadmapPage" class="h-fit">
         <CardContent class="flex flex-col gap-3 pt-4">
           <div class="break-words text-sm font-medium">{{ setting.authorName || setting.siteTitle }}</div>
           <p class="break-words text-sm leading-6 text-muted-foreground">{{ setting.authorProfile || setting.siteDescription }}</p>
