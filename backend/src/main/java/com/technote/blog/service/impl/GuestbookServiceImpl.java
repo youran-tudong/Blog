@@ -13,6 +13,7 @@ import com.technote.blog.model.req.AuditPageQueryReq;
 import com.technote.blog.model.req.AuditReq;
 import com.technote.blog.model.req.GuestbookSubmitReq;
 import com.technote.blog.model.resp.GuestbookResp;
+import com.technote.blog.model.resp.PublicGuestbookResp;
 import com.technote.blog.service.GuestbookService;
 import com.technote.common.exception.BaseException;
 import com.technote.common.model.PageResp;
@@ -33,25 +34,25 @@ public class GuestbookServiceImpl implements GuestbookService {
     private final BlogGuestbookMapper guestbookMapper;
 
     @Override
-    public List<GuestbookResp> listApprovedGuestbooks() {
+    public List<PublicGuestbookResp> listApprovedGuestbooks() {
         return guestbookMapper.selectList(new LambdaQueryWrapper<BlogGuestbook>()
                         .eq(BlogGuestbook::getStatus, AuditStatusEnum.APPROVED.getCode())
                         .orderByDesc(BlogGuestbook::getCreateTime))
                 .stream()
-                .map(this::toGuestbookResp)
+                .map(this::toPublicGuestbookResp)
                 .toList();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GuestbookResp submitGuestbook(GuestbookSubmitReq req) {
+    public PublicGuestbookResp submitGuestbook(GuestbookSubmitReq req) {
         BlogGuestbook guestbook = new BlogGuestbook();
         guestbook.setNickname(req.getNickname().trim());
         guestbook.setEmail(StrUtil.blankToDefault(req.getEmail(), null));
         guestbook.setContent(req.getContent().trim());
         guestbook.setStatus(AuditStatusEnum.PENDING.getCode());
         guestbookMapper.insert(guestbook);
-        return toGuestbookResp(guestbook);
+        return toPublicGuestbookResp(guestbook);
     }
 
     @Override
@@ -102,6 +103,16 @@ public class GuestbookServiceImpl implements GuestbookService {
         if (!AuditStatusEnum.contains(status) || AuditStatusEnum.PENDING.getCode().equals(status)) {
             throw new BaseException(400, "审核状态不正确");
         }
+    }
+
+    private PublicGuestbookResp toPublicGuestbookResp(BlogGuestbook guestbook) {
+        PublicGuestbookResp resp = new PublicGuestbookResp();
+        resp.setId(guestbook.getId());
+        resp.setNickname(guestbook.getNickname());
+        resp.setContent(guestbook.getContent());
+        resp.setReplyContent(guestbook.getReplyContent());
+        resp.setCreateTime(guestbook.getCreateTime());
+        return resp;
     }
 
     private GuestbookResp toGuestbookResp(BlogGuestbook guestbook) {

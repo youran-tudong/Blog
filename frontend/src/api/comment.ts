@@ -53,6 +53,14 @@ export interface GuestbookItem {
   updateTime?: string
 }
 
+export interface PublicGuestbookItem {
+  id: number
+  nickname: string
+  content: string
+  replyContent?: string
+  createTime?: string
+}
+
 export interface GuestbookPayload extends CaptchaPayload {
   nickname: string
   email?: string
@@ -87,11 +95,11 @@ export function deleteCommentApi(id: number) {
 }
 
 export function listPublicGuestbooksApi() {
-  return request.get<ApiResult<GuestbookItem[]>>('/public/guestbooks').then((res) => res.data.data)
+  return request.get<ApiResult<PublicGuestbookItem[]>>('/public/guestbooks').then((res) => res.data.data)
 }
 
 export function submitGuestbookApi(payload: GuestbookPayload) {
-  return request.post<ApiResult<GuestbookItem>>('/public/guestbooks', payload).then((res) => res.data.data)
+  return request.post<ApiResult<PublicGuestbookItem>>('/public/guestbooks', payload).then((res) => res.data.data)
 }
 
 export function pageAdminGuestbooksApi(params: { pageNo?: number; pageSize?: number; status?: number }) {

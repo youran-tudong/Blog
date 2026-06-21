@@ -969,3 +969,22 @@
 验证：
 - 已静态核对路由、导航入口、页面模板结构和 README/PROGRESS 记录。
 - 未运行 `npm install`、`npm run build`、开发服务器或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
+
+### 48. 本轮继续完成：公开留言响应隐私边界修复
+
+修复内容：
+- 新增 `PublicGuestbookResp`，公开留言响应只包含 `id`、`nickname`、`content`、`replyContent`、`createTime`。
+- `GuestbookService` 和 `GuestbookServiceImpl` 将公开留言列表、公开留言提交返回类型改为 `PublicGuestbookResp`，后台分页审核继续使用 `GuestbookResp`。
+- `PublicGuestbookController` 不再返回 `GuestbookResp`，避免公开接口带出 `email`、`status`、`auditBy`、`auditTime`、`updateTime` 等后台字段。
+- `frontend/src/api/comment.ts` 新增 `PublicGuestbookItem`，公开留言 API 使用公开类型；后台审核页继续使用 `GuestbookItem`。
+- `GuestbookPage.vue` 改用 `PublicGuestbookItem`，前台页面不再依赖后台审核字段。
+- `README.md` 同步说明公开评论和留言都不会返回访客邮箱、审核状态等后台字段。
+
+设计说明：
+- 复用评论模块已有的公开/后台 DTO 分离思路，Controller 只暴露公开响应，ServiceImpl 内部通过单独转换方法控制字段边界。
+- 本轮不改数据库结构，不影响后台审核列表、审核操作和删除操作。
+- 提交留言仍保留入库邮箱字段供后台审核查看，但公开提交成功响应不会回传邮箱。
+
+验证：
+- 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和公开留言页面引用。
+- 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。

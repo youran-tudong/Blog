@@ -4,6 +4,7 @@ import com.technote.blog.model.req.AuditPageQueryReq;
 import com.technote.blog.model.req.AuditReq;
 import com.technote.blog.model.req.GuestbookSubmitReq;
 import com.technote.blog.model.resp.GuestbookResp;
+import com.technote.blog.model.resp.PublicGuestbookResp;
 import com.technote.common.model.PageResp;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface GuestbookService {
      *
      * @return 留言列表
      */
-    List<GuestbookResp> listApprovedGuestbooks();
+    List<PublicGuestbookResp> listApprovedGuestbooks();
 
     /**
      * 提交留言，默认进入待审核状态。
@@ -26,7 +27,7 @@ public interface GuestbookService {
      * @param req 留言提交请求
      * @return 留言信息
      */
-    GuestbookResp submitGuestbook(GuestbookSubmitReq req);
+    PublicGuestbookResp submitGuestbook(GuestbookSubmitReq req);
 
     /**
      * 分页查询后台留言审核列表。

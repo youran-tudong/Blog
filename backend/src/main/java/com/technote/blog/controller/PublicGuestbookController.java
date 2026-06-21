@@ -1,7 +1,7 @@
 package com.technote.blog.controller;
 
 import com.technote.blog.model.req.GuestbookSubmitReq;
-import com.technote.blog.model.resp.GuestbookResp;
+import com.technote.blog.model.resp.PublicGuestbookResp;
 import com.technote.blog.service.GuestbookService;
 import com.technote.common.api.ApiResult;
 import com.technote.common.guard.PublicSubmitGuardService;
@@ -32,12 +32,12 @@ public class PublicGuestbookController {
     private final PublicSubmitGuardService publicSubmitGuardService;
 
     @GetMapping
-    public ApiResult<List<GuestbookResp>> listApprovedGuestbooks() {
+    public ApiResult<List<PublicGuestbookResp>> listApprovedGuestbooks() {
         return ApiResult.success(guestbookService.listApprovedGuestbooks());
     }
 
     @PostMapping
-    public ApiResult<GuestbookResp> submitGuestbook(@Valid @RequestBody GuestbookSubmitReq req, HttpServletRequest request) {
+    public ApiResult<PublicGuestbookResp> submitGuestbook(@Valid @RequestBody GuestbookSubmitReq req, HttpServletRequest request) {
         rateLimitService.checkGuestbook(request);
         publicSubmitGuardService.checkGuestbook(req.getCaptchaId(), req.getCaptchaAnswer(), req.getNickname(), req.getContent());
         return ApiResult.success(guestbookService.submitGuestbook(req));

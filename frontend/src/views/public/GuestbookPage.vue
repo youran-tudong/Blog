@@ -4,8 +4,8 @@ import { onMounted, reactive, ref } from 'vue'
 import {
   listPublicGuestbooksApi,
   submitGuestbookApi,
-  type GuestbookItem,
   type GuestbookPayload,
+  type PublicGuestbookItem,
 } from '../../api/comment'
 import { createCaptchaApi, type CaptchaItem } from '../../api/guard'
 import { Alert } from '../../components/ui/alert'
@@ -16,7 +16,7 @@ import { Textarea } from '../../components/ui/textarea'
 import EmptyState from '../../components/EmptyState.vue'
 import LoadingState from '../../components/LoadingState.vue'
 
-const guestbooks = ref<GuestbookItem[]>([])
+const guestbooks = ref<PublicGuestbookItem[]>([])
 const loading = ref(true)
 const submitting = ref(false)
 const loadError = ref('')
