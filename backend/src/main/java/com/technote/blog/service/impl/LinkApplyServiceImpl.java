@@ -16,6 +16,7 @@ import com.technote.blog.model.req.AuditPageQueryReq;
 import com.technote.blog.model.req.LinkApplyAuditReq;
 import com.technote.blog.model.req.LinkApplySubmitReq;
 import com.technote.blog.model.resp.LinkApplyResp;
+import com.technote.blog.model.resp.PublicLinkApplyResp;
 import com.technote.blog.service.LinkApplyService;
 import com.technote.common.exception.BaseException;
 import com.technote.common.model.PageResp;
@@ -42,7 +43,7 @@ public class LinkApplyServiceImpl implements LinkApplyService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public LinkApplyResp submitLinkApply(LinkApplySubmitReq req) {
+    public PublicLinkApplyResp submitLinkApply(LinkApplySubmitReq req) {
         String siteUrl = normalizeSiteUrl(req.getSiteUrl());
         validateOptionalIconUrl(req.getIconUrl());
         ensureNoExistingLink(siteUrl);
@@ -65,7 +66,7 @@ public class LinkApplyServiceImpl implements LinkApplyService {
         } catch (DuplicateKeyException e) {
             throw new BaseException(409, "该网站已有待审核申请，请勿重复提交");
         }
-        return toLinkApplyResp(apply);
+        return toPublicLinkApplyResp(apply);
     }
 
     @Override
@@ -185,6 +186,17 @@ public class LinkApplyServiceImpl implements LinkApplyService {
 
     private String trimToNull(String value) {
         return StrUtil.isBlank(value) ? null : value.trim();
+    }
+
+    private PublicLinkApplyResp toPublicLinkApplyResp(BlogLinkApply apply) {
+        PublicLinkApplyResp resp = new PublicLinkApplyResp();
+        resp.setId(apply.getId());
+        resp.setSiteName(apply.getSiteName());
+        resp.setSiteUrl(apply.getSiteUrl());
+        resp.setIconUrl(apply.getIconUrl());
+        resp.setDescription(apply.getDescription());
+        resp.setCreateTime(apply.getCreateTime());
+        return resp;
     }
 
     private LinkApplyResp toLinkApplyResp(BlogLinkApply apply) {

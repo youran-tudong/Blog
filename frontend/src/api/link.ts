@@ -38,6 +38,15 @@ export interface LinkApplyItem {
   updateTime?: string
 }
 
+export interface PublicLinkApplyItem {
+  id: number
+  siteName: string
+  siteUrl: string
+  iconUrl?: string
+  description?: string
+  createTime?: string
+}
+
 export interface LinkApplyPayload extends CaptchaPayload {
   siteName: string
   siteUrl: string
@@ -78,7 +87,7 @@ export function listPublicLinksApi() {
 }
 
 export function submitLinkApplyApi(payload: LinkApplyPayload) {
-  return request.post<ApiResult<LinkApplyItem>>('/public/link-applies', payload).then((res) => res.data.data)
+  return request.post<ApiResult<PublicLinkApplyItem>>('/public/link-applies', payload).then((res) => res.data.data)
 }
 
 export function pageAdminLinkAppliesApi(params: LinkApplyQuery) {

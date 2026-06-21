@@ -4,6 +4,7 @@ import com.technote.blog.model.req.AuditPageQueryReq;
 import com.technote.blog.model.req.LinkApplyAuditReq;
 import com.technote.blog.model.req.LinkApplySubmitReq;
 import com.technote.blog.model.resp.LinkApplyResp;
+import com.technote.blog.model.resp.PublicLinkApplyResp;
 import com.technote.common.model.PageResp;
 
 /**
@@ -17,7 +18,7 @@ public interface LinkApplyService {
      * @param req 友链申请内容
      * @return 友链申请信息
      */
-    LinkApplyResp submitLinkApply(LinkApplySubmitReq req);
+    PublicLinkApplyResp submitLinkApply(LinkApplySubmitReq req);
 
     /**
      * 分页查询后台友链申请。

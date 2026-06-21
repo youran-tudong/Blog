@@ -1,7 +1,7 @@
 package com.technote.blog.controller;
 
 import com.technote.blog.model.req.LinkApplySubmitReq;
-import com.technote.blog.model.resp.LinkApplyResp;
+import com.technote.blog.model.resp.PublicLinkApplyResp;
 import com.technote.blog.service.LinkApplyService;
 import com.technote.common.api.ApiResult;
 import com.technote.common.guard.PublicSubmitGuardService;
@@ -29,7 +29,7 @@ public class PublicLinkApplyController {
     private final PublicSubmitGuardService publicSubmitGuardService;
 
     @PostMapping
-    public ApiResult<LinkApplyResp> submitLinkApply(@Valid @RequestBody LinkApplySubmitReq req, HttpServletRequest request) {
+    public ApiResult<PublicLinkApplyResp> submitLinkApply(@Valid @RequestBody LinkApplySubmitReq req, HttpServletRequest request) {
         rateLimitService.checkLinkApply(request);
         publicSubmitGuardService.checkLinkApply(
                 req.getCaptchaId(),

@@ -988,3 +988,21 @@
 验证：
 - 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和公开留言页面引用。
 - 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
+
+### 49. 本轮继续完成：公开友链申请响应隐私边界修复
+
+修复内容：
+- 新增 `PublicLinkApplyResp`，公开友链申请响应只包含 `id`、`siteName`、`siteUrl`、`iconUrl`、`description`、`createTime`。
+- `LinkApplyService` 和 `LinkApplyServiceImpl` 将公开友链申请提交返回类型改为 `PublicLinkApplyResp`，后台分页审核继续使用 `LinkApplyResp`。
+- `PublicLinkApplyController` 不再返回后台 `LinkApplyResp`，避免公开接口带出 `applicantEmail`、`status`、`auditRemark`、`auditBy`、`auditTime`、`updateTime` 等字段。
+- `frontend/src/api/link.ts` 新增 `PublicLinkApplyItem`，公开提交 API 使用公开类型；后台友链申请审核页继续使用 `LinkApplyItem`。
+- `README.md` 同步说明公开评论、留言和友链申请都不会返回访客邮箱、审核状态等后台字段。
+
+设计说明：
+- 保留 `LinkApplyResp` 给后台审核列表使用，公开提交只回传展示和确认所需的基础站点信息。
+- 申请邮箱仍会正常入库，供后台审核联系申请人，但公开提交成功响应不再回传邮箱和审核信息。
+- 本轮不改数据库结构，不影响友链申请审核、通过后创建隐藏友链和删除申请的原有流程。
+
+验证：
+- 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和后台审核页类型引用。
+- 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
