@@ -14,6 +14,14 @@ export interface LinkItem {
   updateTime?: string
 }
 
+export interface PublicLinkItem {
+  id: number
+  siteName: string
+  siteUrl: string
+  iconUrl?: string
+  description?: string
+}
+
 export interface LinkPayload {
   siteName: string
   siteUrl: string
@@ -83,7 +91,7 @@ export function deleteLinkApi(id: number) {
 }
 
 export function listPublicLinksApi() {
-  return request.get<ApiResult<LinkItem[]>>('/public/links').then((res) => res.data.data)
+  return request.get<ApiResult<PublicLinkItem[]>>('/public/links').then((res) => res.data.data)
 }
 
 export function submitLinkApplyApi(payload: LinkApplyPayload) {

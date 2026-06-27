@@ -1006,3 +1006,21 @@
 验证：
 - 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和后台审核页类型引用。
 - 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
+
+### 50. 本轮继续完成：公开友链列表响应边界修复
+
+修复内容：
+- 新增 `PublicLinkResp`，公开友链列表只返回 `id`、`siteName`、`siteUrl`、`iconUrl`、`description`。
+- `PublicLinkController` 和 `LinkService.listVisibleLinks` 改为返回 `PublicLinkResp`，避免 `/public/links` 暴露 `sortOrder`、`status`、`createTime`、`updateTime` 等后台管理字段。
+- `LinkServiceImpl` 新增 `toPublicLinkResp`，后台友链管理继续使用 `LinkResp`，公开列表和后台管理的响应边界分开维护。
+- `frontend/src/api/link.ts` 新增 `PublicLinkItem`，公开友链页改用公开类型；后台友链管理页继续使用 `LinkItem`。
+- `README.md` 同步说明公开友链列表也不会返回后台显示状态等内部字段。
+
+设计说明：
+- 公开列表仍然按 `VISIBLE` 状态过滤并按后台排序字段排序，但排序值本身不再返回给访客端。
+- 本轮不改数据库结构，不影响友链新增、编辑、隐藏、删除和友链申请审核流程。
+- DTO 拆分后，后续如果公开页需要新增展示字段，可以只扩展 `PublicLinkResp`，不会把后台管理字段顺带暴露出去。
+
+验证：
+- 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和公开/后台友链页面引用。
+- 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。

@@ -1,6 +1,6 @@
 package com.technote.blog.controller;
 
-import com.technote.blog.model.resp.LinkResp;
+import com.technote.blog.model.resp.PublicLinkResp;
 import com.technote.blog.service.LinkService;
 import com.technote.common.api.ApiResult;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class PublicLinkController {
     private final LinkService linkService;
 
     @GetMapping
-    public ApiResult<List<LinkResp>> listVisibleLinks() {
+    public ApiResult<List<PublicLinkResp>> listVisibleLinks() {
         return ApiResult.success(linkService.listVisibleLinks());
     }
 }

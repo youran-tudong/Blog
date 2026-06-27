@@ -5,7 +5,7 @@ import {
   listPublicLinksApi,
   submitLinkApplyApi,
   type LinkApplyPayload,
-  type LinkItem,
+  type PublicLinkItem,
 } from '../../api/link'
 import { createCaptchaApi, type CaptchaItem } from '../../api/guard'
 import EmptyState from '../../components/EmptyState.vue'
@@ -16,7 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Input } from '../../components/ui/input'
 import { Textarea } from '../../components/ui/textarea'
 
-const links = ref<LinkItem[]>([])
+const links = ref<PublicLinkItem[]>([])
 const loading = ref(true)
 const submitting = ref(false)
 const applicationOpen = ref(false)

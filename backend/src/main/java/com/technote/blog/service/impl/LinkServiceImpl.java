@@ -8,6 +8,7 @@ import com.technote.blog.enums.VisibleStatusEnum;
 import com.technote.blog.mapper.BlogLinkMapper;
 import com.technote.blog.model.req.LinkSaveReq;
 import com.technote.blog.model.resp.LinkResp;
+import com.technote.blog.model.resp.PublicLinkResp;
 import com.technote.blog.service.LinkService;
 import com.technote.common.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -79,13 +80,13 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public List<LinkResp> listVisibleLinks() {
+    public List<PublicLinkResp> listVisibleLinks() {
         return linkMapper.selectList(new LambdaQueryWrapper<BlogLink>()
                         .eq(BlogLink::getStatus, VisibleStatusEnum.VISIBLE.getCode())
                         .orderByAsc(BlogLink::getSortOrder)
                         .orderByDesc(BlogLink::getCreateTime))
                 .stream()
-                .map(this::toLinkResp)
+                .map(this::toPublicLinkResp)
                 .toList();
     }
 
@@ -149,6 +150,16 @@ public class LinkServiceImpl implements LinkService {
         resp.setStatus(link.getStatus());
         resp.setCreateTime(link.getCreateTime());
         resp.setUpdateTime(link.getUpdateTime());
+        return resp;
+    }
+
+    private PublicLinkResp toPublicLinkResp(BlogLink link) {
+        PublicLinkResp resp = new PublicLinkResp();
+        resp.setId(link.getId());
+        resp.setSiteName(link.getSiteName());
+        resp.setSiteUrl(link.getSiteUrl());
+        resp.setIconUrl(link.getIconUrl());
+        resp.setDescription(link.getDescription());
         return resp;
     }
 

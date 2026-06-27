@@ -2,6 +2,7 @@ package com.technote.blog.service;
 
 import com.technote.blog.model.req.LinkSaveReq;
 import com.technote.blog.model.resp.LinkResp;
+import com.technote.blog.model.resp.PublicLinkResp;
 
 import java.util.List;
 
@@ -46,5 +47,5 @@ public interface LinkService {
      *
      * @return 可见友链列表
      */
-    List<LinkResp> listVisibleLinks();
+    List<PublicLinkResp> listVisibleLinks();
 }
