@@ -1,6 +1,7 @@
 package com.technote.blog.service;
 
 import com.technote.blog.model.req.SettingSaveReq;
+import com.technote.blog.model.resp.PublicSettingResp;
 import com.technote.blog.model.resp.SettingResp;
 
 /**
@@ -14,6 +15,13 @@ public interface SettingService {
      * @return 系统设置
      */
     SettingResp getSetting();
+
+    /**
+     * 查询前台站点设置。
+     *
+     * @return 前台站点设置
+     */
+    PublicSettingResp getPublicSetting();
 
     /**
      * 保存系统设置。存在设置记录时更新，不存在时新增。

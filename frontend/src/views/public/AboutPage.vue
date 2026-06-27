@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { getPublicSettingApi, type SettingItem } from '../../api/setting'
+import { getPublicSettingApi, type PublicSettingItem } from '../../api/setting'
 import { Alert } from '../../components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
 import LoadingState from '../../components/LoadingState.vue'
 import { renderMarkdown } from '../../lib/markdown'
 
-const setting = ref<SettingItem>()
+const setting = ref<PublicSettingItem>()
 const loading = ref(true)
 const error = ref('')
 const aboutHtml = computed(() => renderMarkdown(setting.value?.aboutContent || '欢迎来到 TechNote。'))

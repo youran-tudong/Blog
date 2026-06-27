@@ -5,7 +5,7 @@ import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import type { ArticleListItem } from '../api/article'
 import { listPublicColumnsApi, type PublicColumnItem } from '../api/column'
 import { listPopularPublicArticlesApi } from '../api/publicArticle'
-import { getPublicSettingApi, type SettingItem } from '../api/setting'
+import { getPublicSettingApi, type PublicSettingItem } from '../api/setting'
 import { listPublicCategoriesApi, listPublicTagsApi, type PublicCategoryItem, type PublicTagItem } from '../api/taxonomy'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
@@ -34,7 +34,7 @@ const navItems = [
   { label: '关于', to: '/about' },
 ]
 const isRoadmapPage = computed(() => route.path === '/roadmap')
-const setting = ref<SettingItem>({
+const setting = ref<PublicSettingItem>({
   siteTitle: 'TechNote',
   siteDescription: '面向技术创作者的个人内容管理与分享系统',
   authorName: 'TechNote Admin',

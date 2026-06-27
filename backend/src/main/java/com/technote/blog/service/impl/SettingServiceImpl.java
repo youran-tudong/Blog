@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.technote.blog.entity.BlogSetting;
 import com.technote.blog.mapper.BlogSettingMapper;
 import com.technote.blog.model.req.SettingSaveReq;
+import com.technote.blog.model.resp.PublicSettingResp;
 import com.technote.blog.model.resp.SettingResp;
 import com.technote.blog.service.SettingService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,15 @@ public class SettingServiceImpl implements SettingService {
             setting = buildDefaultSetting();
         }
         return toSettingResp(setting);
+    }
+
+    @Override
+    public PublicSettingResp getPublicSetting() {
+        BlogSetting setting = getFirstSetting();
+        if (setting == null) {
+            setting = buildDefaultSetting();
+        }
+        return toPublicSettingResp(setting);
     }
 
     @Override
@@ -87,6 +97,20 @@ public class SettingServiceImpl implements SettingService {
         resp.setAboutContent(setting.getAboutContent());
         resp.setCreateTime(setting.getCreateTime());
         resp.setUpdateTime(setting.getUpdateTime());
+        return resp;
+    }
+
+    private PublicSettingResp toPublicSettingResp(BlogSetting setting) {
+        PublicSettingResp resp = new PublicSettingResp();
+        resp.setSiteTitle(setting.getSiteTitle());
+        resp.setSiteDescription(setting.getSiteDescription());
+        resp.setSiteKeywords(setting.getSiteKeywords());
+        resp.setIcpNo(setting.getIcpNo());
+        resp.setAuthorName(setting.getAuthorName());
+        resp.setAuthorAvatar(setting.getAuthorAvatar());
+        resp.setAuthorProfile(setting.getAuthorProfile());
+        resp.setAnnouncement(setting.getAnnouncement());
+        resp.setAboutContent(setting.getAboutContent());
         return resp;
     }
 }

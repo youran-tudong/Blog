@@ -1,6 +1,6 @@
 package com.technote.blog.controller;
 
-import com.technote.blog.model.resp.SettingResp;
+import com.technote.blog.model.resp.PublicSettingResp;
 import com.technote.blog.service.SettingService;
 import com.technote.common.api.ApiResult;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class PublicSettingController {
     private final SettingService settingService;
 
     @GetMapping
-    public ApiResult<SettingResp> getSetting() {
-        return ApiResult.success(settingService.getSetting());
+    public ApiResult<PublicSettingResp> getSetting() {
+        return ApiResult.success(settingService.getPublicSetting());
     }
 }

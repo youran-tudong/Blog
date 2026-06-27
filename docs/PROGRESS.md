@@ -1042,3 +1042,20 @@
 验证：
 - 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、Mapper SQL、前端 API 类型和公开布局/专栏页引用。
 - 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
+
+### 52. 本轮继续完成：公开站点设置响应边界修复
+
+修复内容：
+- 新增 `PublicSettingResp`，公开站点设置只返回前台布局和关于页需要展示的站点标题、描述、作者信息、公告和关于内容等字段。
+- `SettingService` 新增 `getPublicSetting()`，后台 `getSetting()` 和 `saveSetting()` 继续返回 `SettingResp`，保留记录 ID、创建时间和更新时间供后台使用。
+- `PublicSettingController` 改为返回 `PublicSettingResp`，避免 `/public/settings` 暴露内部记录 ID 和维护时间。
+- 前端 `setting.ts` 新增 `PublicSettingItem`，公开布局 `PublicLayout.vue` 和关于页 `AboutPage.vue` 改用公开类型；后台设置页继续使用原 `SettingPayload`。
+- `README.md` 同步说明公开设置接口不返回记录 ID 和创建/更新时间。
+
+设计说明：
+- 站点标题、SEO 描述、作者介绍、公告和关于内容属于前台展示数据；记录主键和维护时间只服务后台管理，不应作为公开接口契约。
+- 本轮不改数据库结构，不影响后台保存站点设置。
+
+验证：
+- 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和公开页面引用。
+- 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。

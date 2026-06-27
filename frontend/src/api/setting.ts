@@ -15,6 +15,8 @@ export interface SettingItem {
   updateTime?: string
 }
 
+export type PublicSettingItem = Omit<SettingItem, 'id' | 'createTime' | 'updateTime'>
+
 export type SettingPayload = Omit<SettingItem, 'id' | 'createTime' | 'updateTime'>
 
 export function getAdminSettingApi() {
@@ -26,5 +28,5 @@ export function updateAdminSettingApi(payload: SettingPayload) {
 }
 
 export function getPublicSettingApi() {
-  return request.get<ApiResult<SettingItem>>('/public/settings').then((res) => res.data.data)
+  return request.get<ApiResult<PublicSettingItem>>('/public/settings').then((res) => res.data.data)
 }
