@@ -2,7 +2,7 @@ package com.technote.blog.controller;
 
 import com.technote.blog.model.req.PublicArticlePageQueryReq;
 import com.technote.blog.model.resp.ArticleListResp;
-import com.technote.blog.model.resp.ColumnResp;
+import com.technote.blog.model.resp.PublicColumnResp;
 import com.technote.blog.service.ArticleService;
 import com.technote.blog.service.ColumnService;
 import com.technote.common.api.ApiResult;
@@ -29,19 +29,19 @@ public class PublicColumnController {
     private final ArticleService articleService;
 
     @GetMapping
-    public ApiResult<List<ColumnResp>> listColumns() {
+    public ApiResult<List<PublicColumnResp>> listColumns() {
         return ApiResult.success(columnService.listVisibleColumns());
     }
 
     @GetMapping("/{slug}")
-    public ApiResult<ColumnResp> getColumn(@PathVariable String slug) {
+    public ApiResult<PublicColumnResp> getColumn(@PathVariable String slug) {
         return ApiResult.success(columnService.getPublicColumnBySlug(slug));
     }
 
     @GetMapping("/{slug}/articles")
     public ApiResult<PageResp<ArticleListResp>> pageColumnArticles(@PathVariable String slug,
                                                                    @Valid PublicArticlePageQueryReq req) {
-        ColumnResp column = columnService.getPublicColumnBySlug(slug);
+        PublicColumnResp column = columnService.getPublicColumnBySlug(slug);
         req.setColumnId(column.getId());
         return ApiResult.success(articleService.pagePublicArticles(req));
     }

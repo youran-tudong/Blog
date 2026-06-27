@@ -6,7 +6,7 @@ import {
   getPublicColumnApi,
   listPublicColumnsApi,
   pagePublicColumnArticlesApi,
-  type ColumnItem,
+  type PublicColumnItem,
 } from '../../api/column'
 import type { ArticleListItem } from '../../api/article'
 import { Alert } from '../../components/ui/alert'
@@ -20,8 +20,8 @@ import PublicPagination from '../../components/PublicPagination.vue'
 
 const route = useRoute()
 const router = useRouter()
-const columns = ref<ColumnItem[]>([])
-const currentColumn = ref<ColumnItem>()
+const columns = ref<PublicColumnItem[]>([])
+const currentColumn = ref<PublicColumnItem>()
 const articles = ref<ArticleListItem[]>([])
 const keyword = ref(String(route.query.keyword || ''))
 const pageSize = 10

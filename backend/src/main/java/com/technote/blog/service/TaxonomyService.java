@@ -5,6 +5,8 @@ import com.technote.blog.model.req.SortUpdateReq;
 import com.technote.blog.model.req.TagSaveReq;
 import com.technote.blog.model.req.TaxonomyPageQueryReq;
 import com.technote.blog.model.resp.CategoryResp;
+import com.technote.blog.model.resp.PublicCategoryResp;
+import com.technote.blog.model.resp.PublicTagResp;
 import com.technote.blog.model.resp.TagResp;
 import com.technote.common.model.PageResp;
 
@@ -60,7 +62,7 @@ public interface TaxonomyService {
      *
      * @return 可见分类列表
      */
-    List<CategoryResp> listVisibleCategories();
+    List<PublicCategoryResp> listVisibleCategories();
 
     /**
      * 分页查询后台标签列表。
@@ -99,6 +101,5 @@ public interface TaxonomyService {
      *
      * @return 标签列表
      */
-    List<TagResp> listTags();
+    List<PublicTagResp> listTags();
 }
-

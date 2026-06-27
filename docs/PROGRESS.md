@@ -1024,3 +1024,21 @@
 验证：
 - 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、前端 API 类型和公开/后台友链页面引用。
 - 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。
+
+### 51. 本轮继续完成：公开分类标签专栏响应与计数口径修复
+
+修复内容：
+- 新增 `PublicCategoryResp`、`PublicTagResp`、`PublicColumnResp`，公开分类、标签、专栏接口不再返回 `status`、`sortOrder`、`createTime`、`updateTime` 等后台管理字段。
+- `BlogCategoryMapper`、`BlogTagMapper` 新增公开文章计数 SQL，只统计 `deleted = 0`、`status = 1`、`visibility = 1` 的文章。
+- `TaxonomyService.listVisibleCategories`、`TaxonomyService.listTags` 和 `ColumnService` 的公开查询方法改为返回公开 DTO；后台管理分页、新增、编辑仍使用原有 DTO。
+- `ColumnServiceImpl` 将后台专栏响应和前台专栏响应拆成独立转换方法，公开专栏继续使用已有 `selectPublicArticleCount`。
+- 前端 `taxonomy.ts`、`column.ts` 新增公开类型，`PublicLayout.vue` 和 `ColumnsPage.vue` 改用公开类型。
+- `README.md` 同步说明公开分类、标签、专栏的文章数量只统计公开已发布文章。
+
+设计说明：
+- 后台仍可看到全部未删除文章数量，方便内容维护；前台只展示访客真实可访问的文章数量，避免私密或草稿数量被侧面暴露。
+- 本轮不改变分类、标签、专栏表结构，也不改变公开文章分页逻辑，只收紧公开响应字段和计数口径。
+
+验证：
+- 已静态核对公开 Controller、Service 接口、ServiceImpl 转换方法、Mapper SQL、前端 API 类型和公开布局/专栏页引用。
+- 未运行 Maven、npm 构建、后端服务或浏览器验收，因为当前 AGENTS 规则要求这类命令必须先单独询问。

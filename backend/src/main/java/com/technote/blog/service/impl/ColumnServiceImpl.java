@@ -19,6 +19,7 @@ import com.technote.blog.model.req.ColumnSaveReq;
 import com.technote.blog.model.req.SortUpdateReq;
 import com.technote.blog.model.resp.ColumnArticleResp;
 import com.technote.blog.model.resp.ColumnResp;
+import com.technote.blog.model.resp.PublicColumnResp;
 import com.technote.blog.service.ColumnService;
 import com.technote.common.exception.BaseException;
 import com.technote.common.model.PageResp;
@@ -50,7 +51,7 @@ public class ColumnServiceImpl implements ColumnService {
                 new Page<>(req.getPageNo(), req.getPageSize()),
                 buildColumnQuery(req));
         List<ColumnResp> records = page.getRecords().stream()
-                .map(column -> toColumnResp(column, false))
+                .map(this::toColumnResp)
                 .toList();
         return PageResp.of(records, page.getTotal(), page.getCurrent(), page.getSize());
     }
@@ -65,7 +66,7 @@ public class ColumnServiceImpl implements ColumnService {
         column.setCreateBy(currentUserId());
         column.setUpdateBy(currentUserId());
         columnMapper.insert(column);
-        return toColumnResp(column, false);
+        return toColumnResp(column);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ColumnServiceImpl implements ColumnService {
         fillColumn(column, req);
         column.setUpdateBy(currentUserId());
         columnMapper.updateById(column);
-        return toColumnResp(column, false);
+        return toColumnResp(column);
     }
 
     @Override
@@ -166,18 +167,18 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
-    public List<ColumnResp> listVisibleColumns() {
+    public List<PublicColumnResp> listVisibleColumns() {
         return columnMapper.selectList(new LambdaQueryWrapper<BlogColumn>()
                         .eq(BlogColumn::getStatus, VisibleStatusEnum.VISIBLE.getCode())
                         .orderByAsc(BlogColumn::getSortOrder)
                         .orderByDesc(BlogColumn::getCreateTime))
                 .stream()
-                .map(column -> toColumnResp(column, true))
+                .map(this::toPublicColumnResp)
                 .toList();
     }
 
     @Override
-    public ColumnResp getPublicColumnBySlug(String slug) {
+    public PublicColumnResp getPublicColumnBySlug(String slug) {
         BlogColumn column = columnMapper.selectOne(new LambdaQueryWrapper<BlogColumn>()
                 .eq(BlogColumn::getSlug, normalizeSlug(slug))
                 .eq(BlogColumn::getStatus, VisibleStatusEnum.VISIBLE.getCode())
@@ -185,7 +186,7 @@ public class ColumnServiceImpl implements ColumnService {
         if (column == null) {
             throw new BaseException(404, "专栏不存在或未公开");
         }
-        return toColumnResp(column, true);
+        return toPublicColumnResp(column);
     }
 
     private LambdaQueryWrapper<BlogColumn> buildColumnQuery(ColumnPageQueryReq req) {
@@ -243,7 +244,7 @@ public class ColumnServiceImpl implements ColumnService {
         return slug.trim().toLowerCase();
     }
 
-    private ColumnResp toColumnResp(BlogColumn column, boolean publicOnly) {
+    private ColumnResp toColumnResp(BlogColumn column) {
         ColumnResp resp = new ColumnResp();
         resp.setId(column.getId());
         resp.setName(column.getName());
@@ -252,11 +253,20 @@ public class ColumnServiceImpl implements ColumnService {
         resp.setCoverUrl(column.getCoverUrl());
         resp.setSortOrder(column.getSortOrder());
         resp.setStatus(column.getStatus());
-        resp.setArticleCount(publicOnly
-                ? columnMapper.selectPublicArticleCount(column.getId())
-                : columnMapper.selectArticleCount(column.getId()));
+        resp.setArticleCount(columnMapper.selectArticleCount(column.getId()));
         resp.setCreateTime(column.getCreateTime());
         resp.setUpdateTime(column.getUpdateTime());
+        return resp;
+    }
+
+    private PublicColumnResp toPublicColumnResp(BlogColumn column) {
+        PublicColumnResp resp = new PublicColumnResp();
+        resp.setId(column.getId());
+        resp.setName(column.getName());
+        resp.setSlug(column.getSlug());
+        resp.setDescription(column.getDescription());
+        resp.setCoverUrl(column.getCoverUrl());
+        resp.setArticleCount(columnMapper.selectPublicArticleCount(column.getId()));
         return resp;
     }
 

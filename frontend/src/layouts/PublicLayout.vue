@@ -3,10 +3,10 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { LoaderCircle, Search, SunMoon } from 'lucide-vue-next'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import type { ArticleListItem } from '../api/article'
-import { listPublicColumnsApi, type ColumnItem } from '../api/column'
+import { listPublicColumnsApi, type PublicColumnItem } from '../api/column'
 import { listPopularPublicArticlesApi } from '../api/publicArticle'
 import { getPublicSettingApi, type SettingItem } from '../api/setting'
-import { listPublicCategoriesApi, listPublicTagsApi, type CategoryItem, type TagItem } from '../api/taxonomy'
+import { listPublicCategoriesApi, listPublicTagsApi, type PublicCategoryItem, type PublicTagItem } from '../api/taxonomy'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
@@ -17,9 +17,9 @@ import { useAppStore } from '../stores/appStore'
 const appStore = useAppStore()
 const route = useRoute()
 const router = useRouter()
-const categories = ref<CategoryItem[]>([])
-const columns = ref<ColumnItem[]>([])
-const tags = ref<TagItem[]>([])
+const categories = ref<PublicCategoryItem[]>([])
+const columns = ref<PublicColumnItem[]>([])
+const tags = ref<PublicTagItem[]>([])
 const popularArticles = ref<ArticleListItem[]>([])
 const popularLoading = ref(true)
 const searchKeyword = ref(String(route.query.keyword || ''))

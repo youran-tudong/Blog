@@ -22,6 +22,15 @@ export interface ColumnItem {
   updateTime?: string
 }
 
+export interface PublicColumnItem {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  coverUrl?: string
+  articleCount: number
+}
+
 export interface ColumnPayload {
   name: string
   slug: string
@@ -86,11 +95,11 @@ export function removeArticleFromColumnApi(id: number, articleId: number) {
 }
 
 export function listPublicColumnsApi() {
-  return request.get<ApiResult<ColumnItem[]>>('/public/columns').then((res) => res.data.data)
+  return request.get<ApiResult<PublicColumnItem[]>>('/public/columns').then((res) => res.data.data)
 }
 
 export function getPublicColumnApi(slug: string) {
-  return request.get<ApiResult<ColumnItem>>(`/public/columns/${slug}`).then((res) => res.data.data)
+  return request.get<ApiResult<PublicColumnItem>>(`/public/columns/${slug}`).then((res) => res.data.data)
 }
 
 export function pagePublicColumnArticlesApi(slug: string, params: { pageNo?: number; pageSize?: number; keyword?: string }) {

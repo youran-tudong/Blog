@@ -1,7 +1,7 @@
 package com.technote.blog.controller;
 
-import com.technote.blog.model.resp.CategoryResp;
-import com.technote.blog.model.resp.TagResp;
+import com.technote.blog.model.resp.PublicCategoryResp;
+import com.technote.blog.model.resp.PublicTagResp;
 import com.technote.blog.service.TaxonomyService;
 import com.technote.common.api.ApiResult;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,12 @@ public class PublicTaxonomyController {
     private final TaxonomyService taxonomyService;
 
     @GetMapping("/categories")
-    public ApiResult<List<CategoryResp>> listVisibleCategories() {
+    public ApiResult<List<PublicCategoryResp>> listVisibleCategories() {
         return ApiResult.success(taxonomyService.listVisibleCategories());
     }
 
     @GetMapping("/tags")
-    public ApiResult<List<TagResp>> listTags() {
+    public ApiResult<List<PublicTagResp>> listTags() {
         return ApiResult.success(taxonomyService.listTags());
     }
 }
-

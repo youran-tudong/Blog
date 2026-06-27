@@ -26,6 +26,14 @@ export interface CategoryItem {
   updateTime?: string
 }
 
+export interface PublicCategoryItem {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  articleCount: number
+}
+
 export interface CategoryPayload {
   name: string
   slug: string
@@ -42,6 +50,14 @@ export interface TagItem {
   articleCount: number
   createTime?: string
   updateTime?: string
+}
+
+export interface PublicTagItem {
+  id: number
+  name: string
+  slug: string
+  color?: string
+  articleCount: number
 }
 
 export interface TagPayload {
@@ -83,9 +99,9 @@ export function deleteTagApi(id: number) {
 }
 
 export function listPublicCategoriesApi() {
-  return request.get<ApiResult<CategoryItem[]>>('/public/taxonomy/categories').then((res) => res.data.data)
+  return request.get<ApiResult<PublicCategoryItem[]>>('/public/taxonomy/categories').then((res) => res.data.data)
 }
 
 export function listPublicTagsApi() {
-  return request.get<ApiResult<TagItem[]>>('/public/taxonomy/tags').then((res) => res.data.data)
+  return request.get<ApiResult<PublicTagItem[]>>('/public/taxonomy/tags').then((res) => res.data.data)
 }

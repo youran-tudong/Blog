@@ -15,6 +15,8 @@ import com.technote.blog.model.req.SortUpdateReq;
 import com.technote.blog.model.req.TagSaveReq;
 import com.technote.blog.model.req.TaxonomyPageQueryReq;
 import com.technote.blog.model.resp.CategoryResp;
+import com.technote.blog.model.resp.PublicCategoryResp;
+import com.technote.blog.model.resp.PublicTagResp;
 import com.technote.blog.model.resp.TagResp;
 import com.technote.blog.service.TaxonomyService;
 import com.technote.common.exception.BaseException;
@@ -91,13 +93,13 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     }
 
     @Override
-    public List<CategoryResp> listVisibleCategories() {
+    public List<PublicCategoryResp> listVisibleCategories() {
         return categoryMapper.selectList(new LambdaQueryWrapper<BlogCategory>()
                         .eq(BlogCategory::getStatus, VisibleStatusEnum.VISIBLE.getCode())
                         .orderByAsc(BlogCategory::getSortOrder)
                         .orderByDesc(BlogCategory::getCreateTime))
                 .stream()
-                .map(this::toCategoryResp)
+                .map(this::toPublicCategoryResp)
                 .toList();
     }
 
@@ -145,11 +147,11 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     }
 
     @Override
-    public List<TagResp> listTags() {
+    public List<PublicTagResp> listTags() {
         return tagMapper.selectList(new LambdaQueryWrapper<BlogTag>()
                         .orderByDesc(BlogTag::getCreateTime))
                 .stream()
-                .map(this::toTagResp)
+                .map(this::toPublicTagResp)
                 .toList();
     }
 
@@ -261,5 +263,24 @@ public class TaxonomyServiceImpl implements TaxonomyService {
         resp.setUpdateTime(tag.getUpdateTime());
         return resp;
     }
-}
 
+    private PublicCategoryResp toPublicCategoryResp(BlogCategory category) {
+        PublicCategoryResp resp = new PublicCategoryResp();
+        resp.setId(category.getId());
+        resp.setName(category.getName());
+        resp.setSlug(category.getSlug());
+        resp.setDescription(category.getDescription());
+        resp.setArticleCount(categoryMapper.selectPublicArticleCount(category.getId()));
+        return resp;
+    }
+
+    private PublicTagResp toPublicTagResp(BlogTag tag) {
+        PublicTagResp resp = new PublicTagResp();
+        resp.setId(tag.getId());
+        resp.setName(tag.getName());
+        resp.setSlug(tag.getSlug());
+        resp.setColor(tag.getColor());
+        resp.setArticleCount(tagMapper.selectPublicArticleCount(tag.getId()));
+        return resp;
+    }
+}

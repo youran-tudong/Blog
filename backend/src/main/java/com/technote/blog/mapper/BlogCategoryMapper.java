@@ -3,6 +3,7 @@ package com.technote.blog.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.technote.blog.entity.BlogCategory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -19,5 +20,20 @@ public interface BlogCategoryMapper extends BaseMapper<BlogCategory> {
      */
     @Select("SELECT COUNT(1) FROM blog_article WHERE category_id = #{categoryId} AND deleted = 0")
     Long selectArticleCount(Long categoryId);
-}
 
+    /**
+     * 查询分类下公开已发布文章数量。
+     *
+     * @param categoryId 分类ID
+     * @return 公开文章数量
+     */
+    @Select("""
+            SELECT COUNT(1)
+            FROM blog_article
+            WHERE category_id = #{categoryId}
+              AND deleted = 0
+              AND status = 1
+              AND visibility = 1
+            """)
+    Long selectPublicArticleCount(@Param("categoryId") Long categoryId);
+}

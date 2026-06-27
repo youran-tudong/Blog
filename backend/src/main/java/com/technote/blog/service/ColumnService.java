@@ -6,6 +6,7 @@ import com.technote.blog.model.req.ColumnSaveReq;
 import com.technote.blog.model.req.SortUpdateReq;
 import com.technote.blog.model.resp.ColumnArticleResp;
 import com.technote.blog.model.resp.ColumnResp;
+import com.technote.blog.model.resp.PublicColumnResp;
 import com.technote.common.model.PageResp;
 
 import java.util.List;
@@ -93,7 +94,7 @@ public interface ColumnService {
      *
      * @return 可见专栏列表
      */
-    List<ColumnResp> listVisibleColumns();
+    List<PublicColumnResp> listVisibleColumns();
 
     /**
      * 根据访问标识查询前台可见专栏。
@@ -101,5 +102,5 @@ public interface ColumnService {
      * @param slug 访问标识
      * @return 专栏信息
      */
-    ColumnResp getPublicColumnBySlug(String slug);
+    PublicColumnResp getPublicColumnBySlug(String slug);
 }
